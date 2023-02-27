@@ -16,23 +16,6 @@
   </form>
 </div>
   <ul id="list" class="sessions"></ul>
-  <script src="renderer.js"></script>
-  <script>
-  window.addEventListener('DOMContentLoaded', function(){
-  /** jQueryの処理 */
-  const $ = require('jquery');
-  $('input').on('focusin', function() {
-  	$(this).parent().find('label').addClass('active');
-  });
-  $('input').on('focusout', function() {
-  	if (!this.value) {
-    		$(this).parent().find('label').removeClass('active');
-  	}
-  });
-  });
-  
-      
-  </script>
+  <script src="./resources/renderer.js"></script>
 </body>
 </html>
-
