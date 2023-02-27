@@ -2,22 +2,17 @@ const fs = require('fs');
 const path = require('path');
 
 const jsonFilePath = path.join(__dirname, 'data.json');
-
+const { ipcRenderer } = require('electron');
 let data = [];
 
 function loadData() {
-  try {
-    const jsonData = fs.readFileSync(jsonFilePath, 'utf-8');
-    data = JSON.parse(jsonData);
-  } catch (error) {
-    console.log(error);
-  }
+  ipcRenderer.send('loadData', data);
 }
 
 function saveData() {
   try {
     const jsonData = JSON.stringify(data);
-    fs.writeFileSync(jsonFilePath, jsonData, 'utf-8');
+    ipcRenderer.send('saveData', data);
   } catch (error) {
     console.log(error);
   }
@@ -53,13 +48,11 @@ function onSubmit(event) {
 }
 
 loadData();
-renderList();
 
 const submitBtnEl = document.getElementById('submit-btn');
 submitBtnEl.addEventListener('click', onSubmit);
 
 // レンダラープロセス
-const { ipcRenderer } = require('electron');
 
 const list = document.querySelector('#list');
 
@@ -68,7 +61,7 @@ list.addEventListener('contextmenu', (event) => {
   console.log(event.target.parentNode.textContent);
 
   // リストの要素を右クリックしたときに送信するデータ
-  const data = { 
+  const data = {
     index: Array.from(list.children).indexOf(event.target),
     date: event.target.parentNode.querySelector('div').textContent,
     text: event.target.parentNode.querySelector('p').textContent
@@ -87,6 +80,7 @@ ipcRenderer.on('deleteItem', (event, rcvData) => {
   renderList();
 });
 
-    
-  
-
+ipcRenderer.on('loadData', (event, jsonData) => {
+  data = jsonData;
+  renderList();
+});

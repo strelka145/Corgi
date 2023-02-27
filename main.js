@@ -1,6 +1,9 @@
 const { app, BrowserWindow, Menu,ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
+const Store = require('electron-store');
+
+const store = new Store();
 
 let mainWindow;
 
@@ -39,7 +42,6 @@ app.on('activate', function () {
 ipcMain.on('saveData', (event, data) => {
   const filePath = path.join(app.getPath('userData'), 'data.json');
   const jsonData = JSON.stringify(data, null, 2);
-
   fs.writeFile(filePath, jsonData, (err) => {
     if (err) throw err;
     console.log('Data saved to file');
@@ -48,13 +50,13 @@ ipcMain.on('saveData', (event, data) => {
 
 ipcMain.on('loadData', (event) => {
   const filePath = path.join(app.getPath('userData'), 'data.json');
-
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       console.log('File read error:', err);
       event.reply('loadDataResponse', []);
     } else {
       const jsonData = JSON.parse(data);
+      mainWindow.webContents.send('loadData', jsonData);
       event.reply('loadDataResponse', jsonData);
     }
   });
