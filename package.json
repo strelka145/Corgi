@@ -1,0 +1,14 @@
+{
+  "name": "corgi",
+  "version": "1.0.0",
+  "description": "Tools for recording time with one click.",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "strelka145",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^23.1.1"
+  }
+}
