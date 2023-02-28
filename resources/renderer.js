@@ -6,6 +6,11 @@ const {
 } = require('electron');
 let data = [];
 
+var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
+
+var inputBox = document.querySelector('input[type="text"]');
+inputBox.style.width = btnSpanWidth + 'px';
+
 function loadData() {
   ipcRenderer.send('loadData', data);
 }
