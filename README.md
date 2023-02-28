@@ -1,6 +1,9 @@
 # Corgi
-A simple tool for recording time with one click.
 ![screenshot](images/screenshot.png)
+Record notes and time with a single click.
+
+## Supported OS
+It is developed using electron and should work on Windows, Linux, and Mac.
 
 ## ToDo
 
