@@ -1,5 +1,5 @@
 # Corgi
-Tools for recording time with one click. 
+A simple tool for recording time with one click.
 
 ## ToDo
 
