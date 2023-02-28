@@ -1,5 +1,6 @@
 # Corgi
 A simple tool for recording time with one click.
+![screenshot](images/screenshot.png)
 
 ## ToDo
 
