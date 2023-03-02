@@ -41,9 +41,6 @@ const template = Menu.buildFromTemplate([
                 click() {
                   creareLicenseWindow('nodelicenses');
                 },
-            },
-            {
-                label: "chromium",
             }
         ]
     }
