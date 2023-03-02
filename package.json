@@ -4,7 +4,8 @@
   "description": "Tools for recording time with one click.",
   "main": "main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "licenses":"yarn licenses generate-disclaimer>Licenses/nodeLicenses"
   },
   "build": {
     "appId": "com.electron.corgi",
@@ -13,7 +14,9 @@
       "build/*",
       "resources/*",
       "./main.js",
-      "./index.html"
+      "./index.html",
+      "./LICENSE",
+      "Licenses/*"
     ],
     "mac": {
       "target": "dmg",

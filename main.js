@@ -10,6 +10,64 @@ const Store = require('electron-store');
 const store = new Store();
 let mainWindow;
 
+const isMac = (process.platform === 'darwin');
+
+const template = Menu.buildFromTemplate([
+  ...(isMac ? [{
+      label: app.name,
+      submenu: [
+        {role:'about',      label:`About ${app.name}` },
+        {type:'separator'},
+        {role:'services',   label:'Services'},
+        {type:'separator'},
+        {role:'hide',       label:`Hide ${app.name}`},
+        {role:'hideothers', label:'Hide others'},
+        {role:'unhide',     label:'Show All'},
+        {type:'separator'},
+        {role:'quit',       label:`Quit ${app.name}`}
+      ]
+    }] : []),
+    {
+      label: 'License',
+      submenu: [
+            {
+                label: "This app",
+                click() {
+                  creareLicenseWindow('thisapp');
+                },
+            },
+            {
+                label: "node modules",
+                click() {
+                  creareLicenseWindow('nodelicenses');
+                },
+            },
+            {
+                label: "chromium",
+            }
+        ]
+    }
+]);
+Menu.setApplicationMenu(template);
+
+function creareLicenseWindow(whichLicense){
+  let dialogWindow = new BrowserWindow({
+    width: 500,
+    height: 300,
+    title: 'License'
+  })
+  var licensePath;
+  switch (whichLicense){
+    case 'thisapp':
+      licensePath='LICENSE';
+      break;
+    case 'nodelicenses':
+      licensePath='Licenses/nodeLicenses';
+      break;
+  }
+  dialogWindow.loadURL(`file://${path.join(__dirname,licensePath )}`);
+}
+
 function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
