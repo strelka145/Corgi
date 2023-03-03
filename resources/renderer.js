@@ -10,6 +10,26 @@ let data = [];
 var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
 var inputBox = document.querySelector('input[type="text"]');
 inputBox.style.width = btnSpanWidth + 'px';
+const submitBtnEl = document.getElementById('submit-btn');
+
+loadData();
+
+submitBtnEl.addEventListener('click', onSubmit);
+// レンダラープロセス
+const list = document.querySelector('#list');
+list.addEventListener('contextmenu', (event) => {
+  event.preventDefault();
+  console.log(event.target.parentNode.textContent);
+  // リストの要素を右クリックしたときに送信するデータ
+  const data = {
+    index: Array.from(list.children).indexOf(event.target),
+    date: event.target.parentNode.querySelector('div').textContent,
+    text: event.target.parentNode.querySelector('p').textContent
+  };
+  console.log(data);
+  // メインプロセスにデータを送信
+  ipcRenderer.send('show-context-menu', data);
+});
 
 //Get a random string to assign a unique ID to the html element.
 function getRandomID(){
@@ -63,24 +83,7 @@ function onSubmit(event) {
   renderList();
   inputEl.value = '';
 }
-loadData();
-const submitBtnEl = document.getElementById('submit-btn');
-submitBtnEl.addEventListener('click', onSubmit);
-// レンダラープロセス
-const list = document.querySelector('#list');
-list.addEventListener('contextmenu', (event) => {
-  event.preventDefault();
-  console.log(event.target.parentNode.textContent);
-  // リストの要素を右クリックしたときに送信するデータ
-  const data = {
-    index: Array.from(list.children).indexOf(event.target),
-    date: event.target.parentNode.querySelector('div').textContent,
-    text: event.target.parentNode.querySelector('p').textContent
-  };
-  console.log(data);
-  // メインプロセスにデータを送信
-  ipcRenderer.send('show-context-menu', data);
-});
+
 
 
 
