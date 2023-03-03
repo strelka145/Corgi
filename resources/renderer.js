@@ -11,18 +11,10 @@ var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
 var inputBox = document.querySelector('input[type="text"]');
 inputBox.style.width = btnSpanWidth + 'px';
 
-//Function to return a hash
-//To assign a unique ID to each element in the list.
-function hashStringSha1(text){
-  hashAlgorithm = 'SHA-1';
-  const hashFunction = window.crypto.subtle.digest.bind(window.crypto.subtle, hashAlgorithm);
-  const encoder = new TextEncoder();
-  const data = encoder.encode(text);
-  const hashBuffer = hashFunction(data);
-  //Convert hash to hexadecimal string
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-  return hashHex;
+function getRandomID(){
+  idBase64="id"+btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(40)))).substring(0,40);
+  idHtml=idBase64.replace(/=/g, '.').replace(/\//g, '_').replace(/\+/g, '-');
+  return idHtml;
 }
 
 function loadData() {
@@ -43,6 +35,7 @@ function renderList() {
   listEl.innerHTML = '';
   [...data].reverse().forEach((item) => {
     const liEl = document.createElement('li');
+    liEl.setAttribute('id',getRandomID() );
     const liDiv = document.createElement('div');
     liDiv.classList.add('time');
     const dateEl = document.createTextNode(`${item.time}`);
