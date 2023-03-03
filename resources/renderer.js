@@ -84,7 +84,10 @@ list.addEventListener('contextmenu', (event) => {
 
 
 ipcRenderer.on('deleteItem', (event, rcvData) => {
-  data = data.filter(item => item.time !== rcvData.date || item.input !== rcvData.text);
+  const indexToRemove = data.findIndex(item => item.time === rcvData.date && item.input === rcvData.text);
+  if (indexToRemove >= 0) {
+    data.splice(indexToRemove, 1);
+  }
   saveData();
   renderList();
 });
