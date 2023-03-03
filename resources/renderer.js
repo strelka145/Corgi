@@ -62,6 +62,7 @@ function renderList() {
     const dateEl = document.createTextNode(`${item.time}`);
     liDiv.appendChild(dateEl);
     const liP = document.createElement('p');
+    liP.setAttribute('ondblclick','makeEditable(this.parentNode.id)' );
     const textEl = document.createTextNode(`${item.input}`);
     liP.appendChild(textEl);
     liEl.appendChild(liDiv);
@@ -84,6 +85,32 @@ function onSubmit(event) {
   inputEl.value = '';
 }
 
+function id2DataIndex(serchID){
+  const listItems = document.querySelectorAll('li');
+  let itemIndex = -1;
+  for (let i = 0; i < listItems.length; i++) {
+    if (listItems[i].id === serchID) { // 目的の要素を見つけた場合
+      itemIndex = i; // その要素のインデックスを保存
+      break;
+    }
+  }
+  return listItems.length-1-itemIndex;
+}
+
+function makeEditable(elemID) {
+  var p = document.getElementById(elemID).querySelector('p');
+  var text = p.innerHTML;
+  var input = document.createElement("input");
+  input.setAttribute("value", text);
+  p.parentNode.replaceChild(input, p);
+  input.focus();
+  input.onblur = function() {
+    p.innerHTML = this.value;
+    this.parentNode.replaceChild(p, this);
+    data[id2DataIndex(elemID)].input=p.innerHTML;
+    saveData();
+  }
+}
 
 
 
