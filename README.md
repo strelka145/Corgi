@@ -1,5 +1,7 @@
 # Corgi
+
 ![screenshot](images/screenshot.png)
+
 A simple application that records notes and time with a single click.
 
 ## Supported OS
