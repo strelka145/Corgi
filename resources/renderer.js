@@ -6,8 +6,8 @@ const {
 } = require('electron');
 let data = [];
 
+//Align inputbox width
 var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
-
 var inputBox = document.querySelector('input[type="text"]');
 inputBox.style.width = btnSpanWidth + 'px';
 
@@ -73,6 +73,9 @@ list.addEventListener('contextmenu', (event) => {
   // メインプロセスにデータを送信
   ipcRenderer.send('show-context-menu', data);
 });
+
+
+
 ipcRenderer.on('deleteItem', (event, rcvData) => {
   data = data.filter(item => item.time !== rcvData.date || item.input !== rcvData.text);
   saveData();
