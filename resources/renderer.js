@@ -11,6 +11,7 @@ var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
 var inputBox = document.querySelector('input[type="text"]');
 inputBox.style.width = btnSpanWidth + 'px';
 
+//Get a random string to assign a unique ID to the html element.
 function getRandomID(){
   idBase64="id"+btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(40)))).substring(0,40);
   idHtml=idBase64.replace(/=/g, '.').replace(/\//g, '_').replace(/\+/g, '-');
