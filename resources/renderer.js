@@ -11,6 +11,20 @@ var btnSpanWidth = document.querySelector('a.btn-border span').offsetWidth;
 var inputBox = document.querySelector('input[type="text"]');
 inputBox.style.width = btnSpanWidth + 'px';
 
+//Function to return a hash
+//To assign a unique ID to each element in the list.
+function hashStringSha1(text){
+  hashAlgorithm = 'SHA-1';
+  const hashFunction = window.crypto.subtle.digest.bind(window.crypto.subtle, hashAlgorithm);
+  const encoder = new TextEncoder();
+  const data = encoder.encode(text);
+  const hashBuffer = hashFunction(data);
+  //Convert hash to hexadecimal string
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+  return hashHex;
+}
+
 function loadData() {
   ipcRenderer.send('loadData', data);
 }
