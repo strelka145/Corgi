@@ -2,7 +2,8 @@ const {
   app,
   BrowserWindow,
   Menu,
-  ipcMain
+  ipcMain,
+  dialog
 } = require('electron');
 const path = require('path');
 const fs = require('fs');
@@ -28,6 +29,20 @@ const template = Menu.buildFromTemplate([
       ]
     }] : []),
     {
+      label: 'Data',
+      submenu:[
+        {
+          label: 'Export data',
+          click() {
+            exportData();
+          }
+        },
+        {
+          label: 'Load data',
+        }
+      ]
+    },
+    {
       label: 'License',
       submenu: [
             {
@@ -46,6 +61,16 @@ const template = Menu.buildFromTemplate([
     }
 ]);
 Menu.setApplicationMenu(template);
+
+function exportData(){
+  dialog.showSaveDialog({
+    defaultPath: app.getPath('documents') + '/export.json'
+  }).then(result => {
+    fs.copyFile(path.join(app.getPath('userData'), 'data.json'), result.filePath, (err) => {
+      if (err) throw err
+    });
+  });
+}
 
 //Window showing licences
 function creareLicenseWindow(whichLicense){
