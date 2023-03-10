@@ -47,6 +47,7 @@ const template = Menu.buildFromTemplate([
 ]);
 Menu.setApplicationMenu(template);
 
+//Window showing licences
 function creareLicenseWindow(whichLicense){
   let dialogWindow = new BrowserWindow({
     width: 500,
