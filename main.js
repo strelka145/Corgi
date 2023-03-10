@@ -10,6 +10,7 @@ const fs = require('fs');
 const Store = require('electron-store');
 const store = new Store();
 let mainWindow;
+let dataPath=path.join(app.getPath('userData'), 'data.json');
 
 const isMac = (process.platform === 'darwin');
 
@@ -39,6 +40,9 @@ const template = Menu.buildFromTemplate([
         },
         {
           label: 'Load data',
+          click() {
+            loadData();
+          }
         }
       ]
     },
@@ -66,9 +70,21 @@ function exportData(){
   dialog.showSaveDialog({
     defaultPath: app.getPath('documents') + '/export.json'
   }).then(result => {
-    fs.copyFile(path.join(app.getPath('userData'), 'data.json'), result.filePath, (err) => {
+    fs.copyFile(dataPath, result.filePath, (err) => {
       if (err) throw err
     });
+  });
+}
+
+function loadData(){
+  dialog.showOpenDialog({
+    properties: ['openFile']
+  }).then(result => {
+    dataPath=result.filePaths[0]
+    const win = BrowserWindow.getFocusedWindow();
+    if (win) {
+      win.webContents.reloadIgnoringCache();
+    }
   });
 }
 
@@ -118,7 +134,7 @@ app.on('activate', function () {
   }
 });
 ipcMain.on('saveData', (event, data) => {
-  const filePath = path.join(app.getPath('userData'), 'data.json');
+  const filePath = dataPath;
   const jsonData = JSON.stringify(data, null, 2);
   fs.writeFile(filePath, jsonData, (err) => {
     if (err) throw err;
@@ -126,7 +142,7 @@ ipcMain.on('saveData', (event, data) => {
   });
 });
 ipcMain.on('loadData', (event) => {
-  const filePath = path.join(app.getPath('userData'), 'data.json');
+  const filePath = dataPath;
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       console.log('File read error:', err);
