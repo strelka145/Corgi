@@ -35,8 +35,5 @@ This will create a built Corgi app in the dist folder.
 
 ## ToDo
 
-- [x] Exporting data. (2023/03/10)
-- [x] Loading data. (2023/03/10)
-- [x] Edit notes. (2023/03/03)
 - [ ] Synchronization using cloud services.
 - [ ] Content Search.
