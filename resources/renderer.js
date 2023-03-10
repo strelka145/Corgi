@@ -126,3 +126,6 @@ ipcRenderer.on('loadData', (event, jsonData) => {
   data = jsonData;
   renderList();
 });
+ipcRenderer.on('sendDataF', (event) => {
+  ipcRenderer.send('sendDataR', data);
+});

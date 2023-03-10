@@ -11,7 +11,7 @@ const Store = require('electron-store');
 const store = new Store();
 let mainWindow;
 let dataPath=path.join(app.getPath('userData'), 'data.json');
-
+let mergePath;
 const isMac = (process.platform === 'darwin');
 
 const template = Menu.buildFromTemplate([
@@ -42,6 +42,12 @@ const template = Menu.buildFromTemplate([
           label: 'Load data',
           click() {
             loadData();
+          }
+        },
+        {
+          label: 'Combine data',
+          click() {
+            combineData();
           }
         }
       ]
@@ -81,6 +87,14 @@ function loadData(){
   if (filePaths) {
     dataPath=filePaths[0];
     mainWindow.webContents.reloadIgnoringCache();
+  }
+}
+
+function combineData(){
+  const filePaths = dialog.showOpenDialogSync({properties: ['openFile']});
+  if (filePaths) {
+    mergePath=filePaths[0];
+    mainWindow.webContents.send('sendDataF');
   }
 }
 
@@ -164,4 +178,19 @@ ipcMain.on('show-context-menu', (event, data) => {
     }
   }]);
   menu.popup();
+});
+
+//For combineData
+ipcMain.on('sendDataR', (event, dataA) => {
+  const jsonDataA = dataA;
+  fs.readFile(mergePath, 'utf-8', (err, dataB) => {
+    const jsonDataB = JSON.parse(dataB);
+    const combinedJsonData = [...jsonDataA, ...jsonDataB];
+    const sortedCombinedJsonData = combinedJsonData.sort((a, b) => new Date(b.time) - new Date(a.time));
+    fs.writeFile(dataPath, JSON.stringify(sortedCombinedJsonData, null, 2), (err) => {
+      if (err) throw err;
+      console.log('Data saved to file');
+      mainWindow.webContents.reloadIgnoringCache();
+    });
+  });
 });
