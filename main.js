@@ -31,13 +31,13 @@ const template = Menu.buildFromTemplate([
       label: 'License',
       submenu: [
             {
-                label: "This app",
+                label: 'This app',
                 click() {
                   creareLicenseWindow('thisapp');
                 },
             },
             {
-                label: "node modules",
+                label: 'node modules',
                 click() {
                   creareLicenseWindow('nodelicenses');
                 },
