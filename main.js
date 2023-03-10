@@ -139,6 +139,12 @@ ipcMain.on('saveData', (event, data) => {
 });
 ipcMain.on('loadData', (event) => {
   const filePath = dataPath;
+  if (filePath!=path.join(app.getPath('userData'), 'data.json')){
+    mainWindow.setTitle('Corgi : '+filePath)
+  }else{
+    mainWindow.setTitle('Corgi');
+  }
+
   fs.readFile(filePath, 'utf-8', (err, data) => {
     if (err) {
       console.log('File read error:', err);
