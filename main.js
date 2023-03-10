@@ -77,15 +77,11 @@ function exportData(){
 }
 
 function loadData(){
-  dialog.showOpenDialog({
-    properties: ['openFile']
-  }).then(result => {
-    dataPath=result.filePaths[0]
-    const win = BrowserWindow.getFocusedWindow();
-    if (win) {
-      win.webContents.reloadIgnoringCache();
-    }
-  });
+  const filePaths = dialog.showOpenDialogSync({properties: ['openFile']});
+  if (filePaths) {
+    dataPath=filePaths[0];
+    mainWindow.webContents.reloadIgnoringCache();
+  }
 }
 
 //Window showing licences
